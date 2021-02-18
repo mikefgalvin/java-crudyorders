@@ -7,6 +7,7 @@ import com.lambdaschool.ordersapp.models.Payment;
 import com.lambdaschool.ordersapp.repositories.AgentRepository;
 import com.lambdaschool.ordersapp.repositories.CustomerRepository;
 import com.lambdaschool.ordersapp.repositories.OrderRepository;
+import com.lambdaschool.ordersapp.repositories.PaymentRepository;
 import com.lambdaschool.ordersapp.views.CustomerOrderCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class CustomerServicesImpl implements CustomerServices {
 
     @Autowired
     private AgentRepository agentRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Override
     public List<Customer> findAllCustomers()
@@ -98,14 +102,12 @@ public class CustomerServicesImpl implements CustomerServices {
                 newOrder.setAdvanceamount(o.getAdvanceamount());
                 newOrder.setOrderdescription(o.getOrderdescription());
                 newOrder.setCustomer(newCustomer); //put this in
-                for (Payment p : newOrder.getPayments()) { //Payments Loop
-                    Payment newPayment = new Payment();
-                    newPayment.setType(p.getType());
-
+                for (Payment p : newOrder.getPayments()) { //Payments loop
+                    Payment newPayment = paymentRepository.findById(p.getPaymentid())
+                            .orElseThrow(() -> new EntityNotFoundException("Payment " + p.getPaymentid() + " Not Found"));
                     newOrder.getPayments().add(newPayment);
                 }
             }
-
             newCustomer.getOrders().add(newOrder);
         }
 
@@ -138,18 +140,18 @@ public class CustomerServicesImpl implements CustomerServices {
        if (tempCustomer.getOrders().size() > 0) {
            updateCustomer.getOrders().clear(); //precaution
            for (Order o : tempCustomer.getOrders()) { //Orders Loop
-               Order newOrder = new Order();
-               Optional<Order> optionalOrder = orderRepository.findById(o.getOrdnum());
-               if (optionalOrder.isPresent()) {
-                   newOrder = optionalOrder.get();
-               }
-                   newOrder.setOrdamount(o.getOrdamount());
-                   newOrder.setAdvanceamount(o.getAdvanceamount());
-                   newOrder.setOrderdescription(o.getOrderdescription());
-                   for (Payment p : newOrder.getPayments()) { //Payments loop
-                       Payment newPayment = new Payment();
-                       newPayment.setType(p.getType());
-                       newOrder.getPayments().add(newPayment);
+               Order newOrder = new Order(o.getOrdamount(), o.getAdvanceamount(), updateCustomer, o.getOrderdescription());
+
+//                   newOrder.setOrdamount(o.getOrdamount());
+//                   newOrder.setAdvanceamount(o.getAdvanceamount());
+//                   newOrder.setOrderdescription(o.getOrderdescription());
+               newOrder.getPayments().clear();
+                   for (Payment p : o.getPayments()) { //Payments loop
+                       Payment newPayment = paymentRepository.findById(p.getPaymentid())
+                               .orElseThrow(() -> new EntityNotFoundException("Payment " + p.getPaymentid() + " Not Found"));
+                        newOrder.getPayments().add(newPayment);
+//                       newPayment.setType(p.getType());
+//                       newOrder.getPayments().add(newPayment);
                    }
                    updateCustomer.getOrders().add(newOrder);
 

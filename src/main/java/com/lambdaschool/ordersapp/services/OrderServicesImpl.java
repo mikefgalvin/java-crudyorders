@@ -57,23 +57,17 @@ public class OrderServicesImpl implements OrderServices{
 
         newOrder.setOrdamount(tempOrder.getOrdamount());
         newOrder.setAdvanceamount(tempOrder.getAdvanceamount());
-
+        newOrder.setOrderdescription(tempOrder.getOrderdescription());
         newOrder.setCustomer(customerRepository.findById(tempOrder.getCustomer().getCustcode())
                 .orElseThrow(() -> new EntityNotFoundException("Customer " + tempOrder.getCustomer()
                         .getCustcode() + " Not Found")));
 
-        newOrder.setOrderdescription(tempOrder.getOrderdescription());
-
         newOrder.getPayments().clear();
         for (Payment p : tempOrder.getPayments()) { //Payments Loop
-            Payment newPayment = new Payment();
-            Optional<Payment> optionalPayment = paymentRepository.findById(p.getPaymentid());
-            if (optionalPayment.isPresent()) {
-                newPayment = optionalPayment.get();
-            } else {
-                newPayment.setType(p.getType());
+            Payment newPayment = paymentRepository.findById(p.getPaymentid())
+                    .orElseThrow(() -> new EntityNotFoundException("Payment " + p.getPaymentid() + " Not Found!"));
+
                 newOrder.getPayments().add(newPayment);
-            }
         }
 
         return orderRepository.save(newOrder);

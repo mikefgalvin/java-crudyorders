@@ -47,7 +47,7 @@ public class OrderController {
                 .toUri();
         responseHeaders.setLocation(newOrderURI);
 
-        return new ResponseEntity<>(order, responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
 //    PUT http://localhost:2019/orders/order/{orderNum} - see order controller  - completely replaces the given order record
