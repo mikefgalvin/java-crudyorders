@@ -8,6 +8,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "customers")
+@JsonIgnoreProperties({ "valueforopeningamt", "valueforreceiveamt", "valueforpaymentamt",  "valueforoutstandingamt"}) //probably not right
+//@JsonIgnoreProperties(value = "valueforamt")
 public class Customer {
 //    (custcode, custname, custcity, workingarea, custcountry, grade, openingamt, receiveamt,
 //    paymentamt, outstandingamt, phone, agentcode)
@@ -27,6 +29,16 @@ public class Customer {
     private double paymentamt;
     private double outstandingamt;
     private String phone;
+
+    @Transient
+    public boolean valueforopeningamt = false;
+    @Transient
+    public boolean valueforreceiveamt = false;
+    @Transient
+    public boolean valueforpaymentamt = false;
+    @Transient
+    public boolean valueforoutstandingamt = false;
+
 
     @ManyToOne
     @JoinColumn(name = "agentcode", nullable = false)
@@ -109,6 +121,7 @@ public class Customer {
     }
 
     public void setOpeningamt(double openingamt) {
+        valueforopeningamt = true;
         this.openingamt = openingamt;
     }
 
@@ -117,6 +130,7 @@ public class Customer {
     }
 
     public void setReceiveamt(double receiveamt) {
+        valueforreceiveamt = true;
         this.receiveamt = receiveamt;
     }
 
@@ -125,6 +139,7 @@ public class Customer {
     }
 
     public void setPaymentamt(double paymentamt) {
+        valueforpaymentamt = true;
         this.paymentamt = paymentamt;
     }
 
@@ -133,6 +148,7 @@ public class Customer {
     }
 
     public void setOutstandingamt(double outstandingamt) {
+        valueforoutstandingamt = true;
         this.outstandingamt = outstandingamt;
     }
 

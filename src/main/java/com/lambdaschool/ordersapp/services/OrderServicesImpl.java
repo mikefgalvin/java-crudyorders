@@ -2,6 +2,7 @@ package com.lambdaschool.ordersapp.services;
 
 
 import com.lambdaschool.ordersapp.models.Order;
+import com.lambdaschool.ordersapp.models.Payment;
 import com.lambdaschool.ordersapp.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,30 @@ public class OrderServicesImpl implements OrderServices{
 
     @Transactional
     @Override
-    public Order save(Order order) { return orderRepository.save(order); }
+    public Order save(Order tempOrder)
+    {
+        Order newOrder = new Order();
+
+        if (tempOrder.getOrdnum() != 0) {
+            orderRepository.findById(tempOrder.getOrdnum())
+                    .orElseThrow(() -> new EntityNotFoundException("Customer " + tempOrder.getOrdnum() + " Not Found!"));
+
+            newOrder.setOrdnum(tempOrder.getOrdnum());
+        }
+
+        newOrder.setOrdamount(tempOrder.getOrdamount());
+        newOrder.setAdvanceamount(tempOrder.getAdvanceamount());
+        newOrder.setCustomer(tempOrder.getCustomer());
+        newOrder.setOrderdescription(tempOrder.getOrderdescription());
+
+        newOrder.getPayments().clear();
+        for (Payment p : newOrder.getPayments()) { //Payments Loop
+            Payment newPayment = new Payment();
+            newPayment.setType(p.getType());
+
+            newOrder.getPayments().add(newPayment);
+        }
+
+        return orderRepository.save(newOrder);
+    }
 }

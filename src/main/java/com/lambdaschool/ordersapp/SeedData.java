@@ -9,6 +9,7 @@ import com.lambdaschool.ordersapp.repositories.CustomerRepository;
 import com.lambdaschool.ordersapp.repositories.OrderRepository;
 import com.lambdaschool.ordersapp.services.AgentServices;
 import com.lambdaschool.ordersapp.services.CustomerServices;
+import com.lambdaschool.ordersapp.services.OrderServices;
 import com.lambdaschool.ordersapp.services.PaymentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -25,7 +26,7 @@ public class SeedData
      * Connects the customer table to this SeedData method
      */
     @Autowired
-    private CustomerServices customerServices;
+    private CustomerRepository customerRepository;
 
     /**
      * Connects the agents table to this SeedData method
@@ -509,31 +510,31 @@ public class SeedData
         agentServices.save(a11);
         agentServices.save(a12);
 
-        customerServices.save(c01);
-        customerServices.save(c02);
-        customerServices.save(c03);
-        customerServices.save(c04);
-        customerServices.save(c05);
-        customerServices.save(c06);
-        customerServices.save(c07);
-        customerServices.save(c08);
-        customerServices.save(c09);
-        customerServices.save(c10);
-        customerServices.save(c11);
-        customerServices.save(c12);
-        customerServices.save(c13);
-        customerServices.save(c14);
-        customerServices.save(c15);
-        customerServices.save(c16);
-        customerServices.save(c17);
-        customerServices.save(c18);
-        customerServices.save(c19);
-        customerServices.save(c20);
-        customerServices.save(c21);
-        customerServices.save(c22);
-        customerServices.save(c23);
-        customerServices.save(c24);
-        customerServices.save(c25);
+        customerRepository.save(c01);
+        customerRepository.save(c02);
+        customerRepository.save(c03);
+        customerRepository.save(c04);
+        customerRepository.save(c05);
+        customerRepository.save(c06);
+        customerRepository.save(c07);
+        customerRepository.save(c08);
+        customerRepository.save(c09);
+        customerRepository.save(c10);
+        customerRepository.save(c11);
+        customerRepository.save(c12);
+        customerRepository.save(c13);
+        customerRepository.save(c14);
+        customerRepository.save(c15);
+        customerRepository.save(c16);
+        customerRepository.save(c17);
+        customerRepository.save(c18);
+        customerRepository.save(c19);
+        customerRepository.save(c20);
+        customerRepository.save(c21);
+        customerRepository.save(c22);
+        customerRepository.save(c23);
+        customerRepository.save(c24);
+        customerRepository.save(c25);
 
         orderRepository.save(o01);
         orderRepository.save(o02);
