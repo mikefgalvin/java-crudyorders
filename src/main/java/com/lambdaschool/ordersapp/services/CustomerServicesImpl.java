@@ -142,7 +142,7 @@ public class CustomerServicesImpl implements CustomerServices {
                Optional<Order> optionalOrder = orderRepository.findById(o.getOrdnum());
                if (optionalOrder.isPresent()) {
                    newOrder = optionalOrder.get();
-               } else {
+               }
                    newOrder.setOrdamount(o.getOrdamount());
                    newOrder.setAdvanceamount(o.getAdvanceamount());
                    newOrder.setOrderdescription(o.getOrderdescription());
@@ -152,7 +152,7 @@ public class CustomerServicesImpl implements CustomerServices {
                        newOrder.getPayments().add(newPayment);
                    }
                    updateCustomer.getOrders().add(newOrder);
-               }
+
            }
        }
 
@@ -172,7 +172,7 @@ public class CustomerServicesImpl implements CustomerServices {
     @Transactional
     @Override
     public void deleteAll() {
-
+//
     }
 
 
